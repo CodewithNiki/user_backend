@@ -31,13 +31,13 @@ const getContact = asyncHandler(async (req, res) => {
 // @access private
 const createContact = asyncHandler(async (req, res) => {
     console.log("the request body is:", req.body);
-    const { firstName, lastName, email } = req.body;
-    if(!firstName || !email || !lastName ) {
+    const { firstName, lastName, email, phoneNumber } = req.body;
+    if(!firstName || !email || !lastName || !phoneNumber ) {
         res.status(400);
         throw new Error("All fields are mandatory")
     }
     const contact = await Contact.create({
-        firstName, lastName, email, user_id: req.user.id,
+        firstName, lastName, email, phoneNumber, user_id: req.user.id,
     });
     res.status(201).json(contact)
 })
