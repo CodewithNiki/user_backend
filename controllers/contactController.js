@@ -52,6 +52,11 @@ const updateContact = asyncHandler(async (req, res) => {
         throw new Error("Contact not found");
     };
 
+    if(!firstName || !email || !lastName || !phoneNumber ) {
+        res.status(400);
+        throw new Error("All fields are mandatory")
+    }
+
     if(contact.user_id.toString() !== req.user.id){
         res.status(403);
         throw new Error("User can't update for other users ")
