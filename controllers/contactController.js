@@ -64,6 +64,7 @@ const updateContact = asyncHandler(async (req, res) => {
     }
 
     const updateContact = await Contact.findByIdAndUpdate(req.params.id, req.body, {new:true});
+    console.log(req.body);
     res.status(200).json(updateContact)
     // res.status(200).json({
     //     message: `Update Contact for ${req.params.id}`
