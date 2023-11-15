@@ -13,12 +13,13 @@ const port = process.env.PORT || 5000;
 // Define the origins that are allowed to access your server
 
 // CORS middleware configuration
-app.use(cors({
-    origin: 'https://users-crudapp.onrender.com/', // Update this to match your frontend URL
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Include credentials, if needed (e.g., cookies)
-    optionsSuccessStatus: 204, // An HTTP status to respond with for preflight requests
-  }));
+app.use(cors());
+app.use((req, res, next)=>{
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, HEAD, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origins, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+})
   
 app.use(express.json());
 app.use("/api/contacts", require("./routes/contactRoutes"));
