@@ -52,6 +52,7 @@ const updateContact = asyncHandler(async (req, res) => {
         throw new Error("Contact not found");
     };
 
+    const { firstName, lastName, email, phoneNumber } = req.body;
     if(!firstName || !email || !lastName || !phoneNumber ) {
         res.status(400);
         throw new Error("All fields are mandatory")

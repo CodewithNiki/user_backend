@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 
 // CORS middleware configuration
 app.use(cors({
-    origin: 'http://localhost:5173', // Update this to match your frontend URL
+    origin: 'https://users-crudapp.onrender.com/', // Update this to match your frontend URL
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true, // Include credentials, if needed (e.g., cookies)
     optionsSuccessStatus: 204, // An HTTP status to respond with for preflight requests
