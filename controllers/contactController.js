@@ -31,13 +31,13 @@ const getContact = asyncHandler(async (req, res) => {
 // @access private
 const createContact = asyncHandler(async (req, res) => {
     console.log("the request body is:", req.body);
-    const { firstName, lastName, email, phoneNumber } = req.body;
+    const { firstName, lastName, email, phoneNumber, image } = req.body;
     if(!firstName || !email || !lastName || !phoneNumber ) {
         res.status(400);
         throw new Error("All fields are mandatory")
     }
     const contact = await Contact.create({
-        firstName, lastName, email, phoneNumber, user_id: req.user.id,
+        firstName, lastName, email, phoneNumber, image, user_id: req.user.id,
     });
     res.status(201).json(contact)
 })
@@ -64,11 +64,7 @@ const updateContact = asyncHandler(async (req, res) => {
     }
 
     const updateContact = await Contact.findByIdAndUpdate(req.params.id, req.body, {new:true});
-    console.log(req.body);
     res.status(200).json(updateContact)
-    // res.status(200).json({
-    //     message: `Update Contact for ${req.params.id}`
-    // })
 });
 
 // @desc Delete a contact
@@ -87,9 +83,6 @@ const deleteContact = asyncHandler(async (req, res) => {
     }
     
     res.status(200).json(contact)
-    // res.status(200).json({
-    //     message: `Delete contact for ${req.params.id}`
-    // })
 })
 
 module.exports = { getContacts, getContact, createContact, updateContact, deleteContact }
