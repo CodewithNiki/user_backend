@@ -28,6 +28,10 @@ const contactSchema = mongoose.Schema(
       data: Buffer, // Binary data of the image
       contentType: String, // MIME type of the image (e.g., 'image/jpeg', 'image/png', etc.)
     },
+    lastViewedAt: {
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: true,

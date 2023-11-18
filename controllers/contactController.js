@@ -20,10 +20,15 @@ const getContact = asyncHandler(async (req, res) => {
         res.status(404);
         throw new Error("Contact not found");
     }
-    res.status(200).json(contact)
-    // res.status(200).json({
-    //     message: `Get contact for ${req.params.id}`
-    // })
+
+    contact.lastViewedAt = new Date();
+    await contact.save();
+    res.json(contact)
+});
+
+const getRecentContacts = asyncHandler(async (req, res) =>{
+    const recentContacts = await Contact.find().sort({lastViewedAt: "desc"});
+    res.status(200).json(recentContacts)
 })
 
 // @desc Post a contact
@@ -85,4 +90,4 @@ const deleteContact = asyncHandler(async (req, res) => {
     res.status(200).json(contact)
 })
 
-module.exports = { getContacts, getContact, createContact, updateContact, deleteContact }
+module.exports = { getContacts, getContact, getRecentContacts, createContact, updateContact, deleteContact }
