@@ -28,6 +28,7 @@ const getContact = asyncHandler(async (req, res) => {
 
 const getRecentContacts = asyncHandler(async (req, res) =>{
     const recentContacts = await Contact.find().sort({lastViewedAt: "desc"});
+    console.log(recentContacts);
     res.status(200).json(recentContacts)
 })
 
