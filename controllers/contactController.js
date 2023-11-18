@@ -29,11 +29,6 @@ const getContact = asyncHandler(async (req, res) => {
   res.json(contact);
 });
 
-const getRecentContacts = asyncHandler(async (req, res) => {
-  const recentContacts = await Contact.find().sort({ lastViewedAt: "desc" });
-  console.log(recentContacts);
-  res.status(200).json(recentContacts);
-});
 
 // @desc Post a contact
 // @routes POST /api/contacts
@@ -106,7 +101,6 @@ const deleteContact = asyncHandler(async (req, res) => {
 module.exports = {
   getContacts,
   getContact,
-  getRecentContacts,
   createContact,
   updateContact,
   deleteContact,
