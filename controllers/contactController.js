@@ -36,10 +36,10 @@ const getContact = asyncHandler(async (req, res) => {
 const createContact = asyncHandler(async (req, res) => {
   try {
     console.log("the request body is:", req.body);
-    const imageData = {
-      data: req.file.buffer,
-      contentType: req.file.mimetype,
-    };
+    const imageData = req.file
+  ? { data: req.file.buffer.toString("base64"), contentType: req.file.mimetype }
+  : null;
+
     const { firstName, lastName, email, phoneNumber, image } = req.body;
     if (!firstName || !email || !lastName || !phoneNumber) {
       res.status(400);
