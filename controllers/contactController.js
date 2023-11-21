@@ -1,8 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Contact = require("../models/contactModule");
-const multer = require("multer");
-const storage = multer.memoryStorage(); // Store file data in memory as Buffer
-const upload = multer({ storage: storage });
 
 // @desc Get all contacts
 // @routes GET /api/contacts
@@ -37,26 +34,33 @@ const getContact = asyncHandler(async (req, res) => {
 // @routes POST /api/contacts
 // @access private
 const createContact = asyncHandler(async (req, res) => {
-  console.log("the request body is:", req.body);
-  const { firstName, lastName, email, phoneNumber, image } = req.body;
-  const imageData = {
-    data: req.file.buffer,
-    contentType: req.file.mimetype,
-  };
-  if (!firstName || !email || !lastName || !phoneNumber) {
-    res.status(400);
-    throw new Error("All fields are mandatory");
+  try {
+    console.log("the request body is:", req.body);
+    const imageData = {
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    };
+    const { firstName, lastName, email, phoneNumber, image } = req.body;
+    if (!firstName || !email || !lastName || !phoneNumber) {
+      res.status(400);
+      throw new Error("All fields are mandatory");
+    }
+    const contact = await Contact.create({
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      image: imageData,
+      user_id: req.user.id,
+    });
+    
+    res.status(201).json(contact);
+  } catch (error) {
+    console.error("Error creating contact:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
-  const contact = await Contact.create({
-    firstName,
-    lastName,
-    email,
-    phoneNumber,
-    image: imageData,
-    user_id: req.user.id,
-  });
-  res.status(201).json(contact);
 });
+
 
 // @desc Update a contact
 // @routes PUT /api/contacts/:id
