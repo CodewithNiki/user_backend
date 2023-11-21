@@ -1,5 +1,9 @@
 const asyncHandler = require("express-async-handler");
 const Contact = require("../models/contactModule");
+const multer = require("multer");
+const storage = multer.memoryStorage(); // Store file data in memory as Buffer
+const upload = multer({ storage: storage });
+
 // @desc Get all contacts
 // @routes GET /api/contacts
 // @access private
@@ -29,13 +33,16 @@ const getContact = asyncHandler(async (req, res) => {
   res.json(contact);
 });
 
-
 // @desc Post a contact
 // @routes POST /api/contacts
 // @access private
 const createContact = asyncHandler(async (req, res) => {
   console.log("the request body is:", req.body);
   const { firstName, lastName, email, phoneNumber, image } = req.body;
+  const imageData = {
+    data: req.file.buffer,
+    contentType: req.file.mimetype,
+  };
   if (!firstName || !email || !lastName || !phoneNumber) {
     res.status(400);
     throw new Error("All fields are mandatory");
@@ -45,7 +52,7 @@ const createContact = asyncHandler(async (req, res) => {
     lastName,
     email,
     phoneNumber,
-    image,
+    image: imageData,
     user_id: req.user.id,
   });
   res.status(201).json(contact);
@@ -61,7 +68,7 @@ const updateContact = asyncHandler(async (req, res) => {
     throw new Error("Contact not found");
   }
 
-  const { firstName, lastName, email, phoneNumber } = req.body;
+  const { firstName, lastName, email, phoneNumber, image } = req.body;
   if (!firstName || !email || !lastName || !phoneNumber) {
     res.status(400);
     throw new Error("All fields are mandatory");
