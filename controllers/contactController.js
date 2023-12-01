@@ -37,8 +37,6 @@ const createContact = asyncHandler(async (req, res) => {
   try {
     console.log("the request body is:", req.body);
     const imageData = req.file
-  ? { data: req.file.buffer.toString("base64"), contentType: req.file.mimetype }
-  : null;
 
     const { firstName, lastName, email, phoneNumber, image } = req.body;
     if (!firstName || !email || !lastName || !phoneNumber) {
@@ -53,6 +51,8 @@ const createContact = asyncHandler(async (req, res) => {
       image: imageData,
       user_id: req.user.id,
     });
+
+    console.log(contact);
     
     res.status(201).json(contact);
   } catch (error) {

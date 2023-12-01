@@ -25,8 +25,7 @@ const contactSchema = mongoose.Schema(
       required: [true, "Please add phone number"],
     },
     image: {
-      data: Buffer, // Binary data of the image
-      contentType: String, // MIME type of the image (e.g., 'image/jpeg', 'image/png', etc.)
+      type: String
     },
     lastViewedAt: {
       type: Date,
